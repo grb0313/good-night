@@ -96,7 +96,7 @@ except WeChatClientException as e:
 wm = WeChatMessage(client)
 weather = get_weather()
 weathertorrow = get_weathertorrow()
-if weather is None or weathertorrow is None:
+if weather is None:
   print('获取天气失败')
   exit(422)
 data = {
