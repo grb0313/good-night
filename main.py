@@ -41,7 +41,8 @@ def get_weather():
   if res is None:
     return None
   weather = res['data']['list'][0]
-  return weather
+  weathertorrow = res['data']['list'][1]
+  return weather,weathertorrow
 
 # 纪念日正数
 def get_memorial_days_count():
@@ -82,7 +83,7 @@ except WeChatClientException as e:
   exit(502)
 
 wm = WeChatMessage(client)
-weather = get_weather()
+weather,weathertorrow = get_weather()
 if weather is None:
   print('获取天气失败')
   exit(422)
@@ -109,6 +110,14 @@ data = {
   },
   "lowest": {
     "value": math.floor(weather['low']),
+    "color": get_random_color()
+  },
+  "highesttorrow": {
+    "value": math.floor(weathertorrow['high']),
+    "color": get_random_color()
+  },
+  "lowesttorrow": {
+    "value": math.floor(weathertorrow['low']),
     "color": get_random_color()
   },
   "love_days": {
