@@ -41,8 +41,19 @@ def get_weather():
   if res is None:
     return None
   weather = res['data']['list'][0]
+  return weather
+
+# weathertorrow 直接返回对象，在使用的地方用字段进行调用。
+def get_weathertorrow():
+  if city is None:
+    print('请设置城市')
+    return None
+  url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city
+  res = requests.get(url).json()
+  if res is None:
+    return None
   weathertorrow = res['data']['list'][1]
-  return weather,weathertorrow
+  return weathertorrow
 
 # 纪念日正数
 def get_memorial_days_count():
@@ -84,7 +95,8 @@ except WeChatClientException as e:
 
 wm = WeChatMessage(client)
 weather = get_weather()
-if weather is None:
+weathertorrow = get_weathertorrow()
+if weather is None or weathertorrow is None:
   print('获取天气失败')
   exit(422)
 data = {
@@ -98,6 +110,10 @@ data = {
   },
   "weather": {
     "value": weather['weather'],
+    "color": get_random_color()
+  },
+  "weathertorrow": {
+    "value": weathertorrow['weather'],
     "color": get_random_color()
   },
   "temperature": {
